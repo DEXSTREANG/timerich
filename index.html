@@ -3,27 +3,163 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TimeRich 타임리치</title>
-<meta name="description" content="일상의 시간을 벌어 드리는 프로그램, 타임리치">
+<title>TimeRich 타임리치 — 돈 말고, 시간을 벌어 드립니다</title>
+<meta name="description" content="매일 반복되는 일을 대신 해 주는 프로그램을 만듭니다. 첫 번째 프로그램은 숙박업 호스트용 청소캘린더입니다.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0f1420">
+<link rel="canonical" href="https://timerich.kr/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TimeRich 타임리치">
+<meta property="og:title" content="돈 말고, 시간을 벌어 드립니다">
+<meta property="og:description" content="매일 반복되는 일을 대신 해 주는 프로그램을 만듭니다.">
+<meta property="og:url" content="https://timerich.kr/">
+<meta property="og:image" content="https://timerich.kr/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
+:root{--bg:#0f1420;--line:#262e40;--tx:#eef1f7;--body:#c9d1de;--sub:#9aa3b2;--amber:#ffad4d;--ink:#111722}
 *{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f1420;color:#eef1f7;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;word-break:keep-all;padding:32px}
-.w{max-width:560px;text-align:center}
-.logo{font-size:44px;font-weight:900;letter-spacing:-1px}
-.logo span{color:#ffad4d}
-.ko{margin-top:6px;font-size:16px;color:#8f9bb3;letter-spacing:4px}
-h1{margin-top:40px;font-size:26px;line-height:1.5;font-weight:800}
-p{margin-top:16px;font-size:17px;line-height:1.7;color:#aab5ca}
-.soon{display:inline-block;margin-top:36px;padding:10px 22px;border-radius:999px;border:1px solid #33405a;color:#c9d3e6;font-size:15px}
+html{-webkit-text-size-adjust:100%;background:var(--bg);color-scheme:dark}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR','Noto Sans CJK KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;line-height:1.75;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* 맨 위 */
+.top{display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+.logo{font-size:1.4rem;font-weight:900;letter-spacing:-.02em;text-decoration:none;line-height:1}
+.logo b{color:var(--amber);font-weight:900}
+.logo span{margin-left:.6em;font-size:.82rem;font-weight:500;color:var(--sub);letter-spacing:.18em}
+.top nav a{font-size:.95rem;color:var(--sub);text-decoration:none;padding:8px 2px}
+.top nav a:hover{color:var(--tx)}
+
+/* 첫 화면: 글자만 크게 */
+.hero{padding:9vh 0 11vh}
+.hero h1{font-size:clamp(2.6rem,8.4vw,5.6rem);line-height:1.16;font-weight:900;letter-spacing:-.04em}
+.hero p{margin-top:1.6em;font-size:clamp(1.05rem,2.1vw,1.3rem);color:var(--sub);max-width:32em}
+
+/* 프로그램 */
+.prog{border-top:1px solid var(--line);padding:72px 0 84px;display:grid;grid-template-columns:minmax(0,1fr) 400px;column-gap:64px;align-items:start}
+.who{font-size:.95rem;color:var(--sub)}
+.prog h2{margin-top:.15em;font-size:clamp(2.1rem,5.2vw,3.3rem);line-height:1.2;font-weight:900;letter-spacing:-.035em}
+.lead{margin-top:.9em;font-size:clamp(1.15rem,2.3vw,1.45rem);line-height:1.55;font-weight:700;letter-spacing:-.01em}
+.what{list-style:none;margin-top:30px;border-top:1px solid var(--line)}
+.what li{padding:17px 0;border-bottom:1px solid var(--line);color:var(--body);text-wrap:pretty}
+
+.shots{position:sticky;top:32px;width:100%;aspect-ratio:400/560;grid-column:2;grid-row:1/span 3}
+/* 폰 틀: 화면 위쪽에 상태 표시줄만큼 여백을 둬서 둥근 모서리에 글자가 가리지 않게 */
+.phone{position:absolute;aspect-ratio:390/880;display:flex;flex-direction:column;border:7px solid #2b3345;border-radius:34px;overflow:hidden;background:#0e1014;box-shadow:0 18px 48px rgba(0,0,0,.55),0 0 0 1px #3a4358}
+.phone::before{content:'';flex:none;height:4.2%}
+.phone img{display:block;width:100%;flex:1;min-height:0;object-fit:cover;object-position:top}
+.phone.back{width:56%;right:1%;top:0;transform:rotate(5deg)}
+.phone.front{width:58%;left:1%;top:8%;transform:rotate(-3deg)}
+.copy{grid-column:1}
+
+/* 가격과 구매 */
+.buy{grid-column:1;margin-top:40px}
+.tiers{border-collapse:collapse;font-variant-numeric:tabular-nums}
+.tiers caption{text-align:left;font-size:.95rem;color:var(--sub);padding-bottom:6px}
+.tiers th{font-weight:500;color:var(--body);text-align:left;padding:5px 2.2em 5px 0}
+.tiers td{font-weight:900;font-size:1.25rem;letter-spacing:-.01em;text-align:right;padding:5px 0}
+.terms{margin-top:14px;font-size:.95rem;color:var(--sub)}
+.btn{display:inline-block;margin-top:28px;background:var(--amber);color:var(--ink);font-weight:900;font-size:1.12rem;line-height:1;padding:19px 34px;border-radius:14px;text-decoration:none}
+.btn:hover{background:#ffbb6b}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:14px}
+.guide{display:block;width:fit-content;margin-top:20px;font-size:.98rem;color:var(--tx);text-underline-offset:5px}
+.fine{margin-top:34px;font-size:.9rem;line-height:1.75;color:var(--sub);max-width:36em}
+.fine p+p{margin-top:.7em}
+.fine p{text-wrap:pretty}
+.nb{white-space:nowrap}
+br.m{display:none}
+
+/* 다음 · 맨 아래 */
+.next{border-top:1px solid var(--line);padding:54px 0;font-size:1.08rem;color:var(--sub)}
+.foot{border-top:1px solid var(--line);padding:30px 0 56px;font-size:.88rem;color:var(--sub);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:880px){
+  body{font-size:16px}
+  .wrap{padding:0 22px}
+  .top{padding:20px 0}
+  .hero{padding:7vh 0 9vh}
+  .prog{display:block;padding:52px 0 64px}
+  .shots{position:relative;top:auto;max-width:360px;margin:38px auto 6px}
+  .what{margin-top:34px}
+  .btn{display:block;text-align:center;max-width:420px}
+}
+@media (max-width:520px){
+  br.m{display:inline}
+  .btn{max-width:none}
+}
 </style>
 </head>
 <body>
-<div class="w">
-<div class="logo">Time<span>Rich</span></div>
-<div class="ko">타임리치</div>
-<h1>돈 말고, 시간을 벌어 드립니다</h1>
-<p>매일 반복되는 일을 대신 해 주는 프로그램을 만듭니다.</p>
-<div class="soon">곧 문을 엽니다</div>
+<div class="wrap">
+
+<header class="top">
+<a class="logo" href="https://timerich.kr/" aria-label="TimeRich 타임리치">Time<b>Rich</b><span>타임리치</span></a>
+<nav><a href="https://timerich.kr/clean/guide/">설치 안내서</a></nav>
+</header>
+
+<main>
+<section class="hero">
+<h1>돈 말고,<br>시간을 벌어 드립니다</h1>
+<p>매일 반복되는 일을 대신 해 주는 <br class="m">프로그램을 만듭니다.</p>
+</section>
+
+<section class="prog" id="clean">
+<div class="copy">
+<p class="who">숙박업 호스트용 프로그램</p>
+<h2>청소캘린더</h2>
+<p class="lead">예약 알림이 오면 <br class="m">청소 일정이 저절로 정리됩니다.</p>
+</div>
+
+<div class="shots" aria-hidden="true">
+<div class="phone back"><img src="img/home/calendar.webp" width="560" height="1212" alt=""></div>
+<div class="phone front"><img src="img/home/tomorrow.webp" width="560" height="1212" alt=""></div>
+</div>
+
+<div class="copy">
+<ul class="what">
+<li>아고다, 부킹닷컴, 에어비앤비, 트립닷컴 등에서 오는 예약 <span class="nb">확정·변경·취소</span> 알림을 10분마다 읽어 청소 장부에 넣습니다.</li>
+<li>체크아웃 날짜에 맞춰 청소 일정이 생기고, 숙박일수와 인원으로 수건 개수까지 계산합니다.</li>
+<li>청소업체는 링크와 비밀번호 4자리로 들어와 <span class="nb">오늘·내일</span> 청소와 캘린더를 확인합니다. 앱 설치가 필요 없습니다.</li>
+</ul>
+</div>
+
+<div class="buy">
+<table class="tiers">
+<caption>운영 호실 수에 따른 가격</caption>
+<tr><th scope="row">4곳까지</th><td>199,000원</td></tr>
+<tr><th scope="row">8곳까지</th><td>319,000원</td></tr>
+<tr><th scope="row">12곳까지</th><td>439,000원</td></tr>
+</table>
+<p class="terms">한 번 결제로 평생 사용, 구매 후 30일 <span class="nb">설치·사용</span> 문의, 1년 무료 업데이트</p>
+<a class="btn" href="https://kmong.com/gig/873974" target="_blank" rel="noopener">크몽에서 구매하기</a>
+<a class="guide" href="https://timerich.kr/clean/guide/">구매하셨나요? 설치 안내서 보기</a>
+<div class="fine">
+<p>크몽에서는 ‘스테이오토 청소캘린더’라는 이름으로 판매합니다. 결제와 문의는 크몽에서 진행됩니다.</p>
+<p>예약 플랫폼에 따라 자동으로 읽는 범위가 다릅니다. 구매 전에 크몽 상세 설명의 <span class="nb">‘꼭 확인해 주세요’</span>를 읽어 주세요.</p>
+<p>예약 정보와 게스트 정보는 구매하신 분의 구글 계정 안에만 저장되며, 판매자에게 전달되지 않습니다.</p>
+</div>
+</div>
+</section>
+
+<section class="next">
+<p>다음 프로그램을 만들고 있습니다.</p>
+</section>
+</main>
+
+<footer class="foot">
+<span>TimeRich 타임리치</span>
+<span>© 2026 TimeRich</span>
+</footer>
+
 </div>
 </body>
 </html>
